@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<Card>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .column {
+        float: left;
+        width: 170px;
+        padding: 5px;
+    }
+        
+    .row::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+</style>
+
+<form asp-controller="Home" asp-action="Index" asp-route-deck= ViewBag.Deck>
+    <table>
+        <tr>
+            <td>
+                <p>Cards Remaining: @ViewBag.Deck.remaining</p>
+            </td>
+            
+        </tr>
+        <tr>
+            <td>Number to Draw: </td>
+            <td><input type="text" id="txtNumberToDraw" name="numberToDraw" min="1"/></td>
+        </tr>        
+    </table>
+</form>
+ 
+
+<form asp-controller="Home" asp-action="KeepCards">
+    @if (Model.Count > 0)
+    {
+        <div>
+            <input type="submit" value="Keep Selected Cards" class="btn btn-primary" style="margin: 10px"/>
+        </div>
+
+    }
+    @for(int i = 0; i < Model.Count; i++)
+    {
+        <div class="row" style="margin-bottom:25px">
+            <div class="column" style="float:left">
+                <img src=@Model[i].image style="width:125px; height: auto" />
+            </div>
+            <div class="column">
+                <p>Value: @Model[i].value</p>
+                <p>Suit: @Model[i].suit</p>
+            
+                @Html.CheckBoxFor(m => m[i].isKept)                
+            </div>
+        </div>
+
+    }
+</form>
